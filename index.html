@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Superposition Theorem - Dual Circuit Bench Laboratory</title>
+    <style>
+        :root {
+            --bench-base: #f0f3f4;
+            --panel-face: #ffffff;
+            --panel-border: #cbd5e1;
+            --text-main: #1e293b;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--bench-base);
+            margin: 0;
+            padding: 10px;
+            color: var(--text-main);
+            box-sizing: border-box;
+        }
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 20px;
+            border: 2px solid var(--panel-border);
+        }
+        header {
+            text-align: center;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 26px;
+            color: #0f172a;
+            letter-spacing: 0.5px;
+        }
+        .lab-grid {
+            display: grid;
+            grid-template-columns: 340px 1fr 340px;
+            gap: 15px;
+        }
+        @media (max-width: 1150px) {
+            .lab-grid { grid-template-columns: 1fr; }
+        }
+        .rack-panel {
+            background: #f8fafc;
+            border: 2px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 15px;
+            position: relative;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .panel-header {
+            position: absolute;
+            top: -11px;
+            left: 15px;
+            background: #0284c7;
+            color: white;
+            padding: 2px 10px;
+            font-weight: bold;
+            font-size: 11px;
+            border-radius: 3px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .status-banner {
+            background-color: #fef08a;
+            color: #854d0e;
+            text-align: center;
+            font-weight: bold;
+            font-size: 15px;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border: 2px solid #facc15;
+        }
+        canvas {
+            background: #ffffff;
+            display: block;
+            margin: 0 auto;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+        }
+        .control-group {
+            margin: 12px 0;
+        }
+        .control-group label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 5px;
+            color: #475569;
+        }
+        select, input[type=range] {
+            width: 100%;
+            padding: 6px;
+            box-sizing: border-box;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            background: #ffffff;
+            font-size: 12px;
+        }
+
+        /* TOGGLE SWITCHES */
+        .switches-bench {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            background: #ffffff;
+            padding: 12px;
+            border-radius: 6px;
+            border: 2px solid #e2e8f0;
+            margin-bottom: 15px;
+        }
+        .switch-unit {
+            text-align: center;
+        }
+        .switch-label {
+            font-size: 11px;
+            font-weight: bold;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider-toggle {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #cbd5e1; transition: .3s; border-radius: 30px; border: 2px solid #94a3b8;
+        }
+        .slider-toggle:before {
+            position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 2px;
+            background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        input:checked + .slider-toggle { background-color: #16a34a; }
+        input:checked + .slider-toggle:before { transform: translateX(30px); }
+        .led-indicator {
+            width: 10px; height: 10px; border-radius: 50%; background: #cbd5e1; display: inline-block; margin-top: 4px;
+        }
+        .led-indicator.active { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+
+        /* DIGITAL METER PANEL */
+        .digital-meter-panel {
+            background: #0f172a;
+            border: 3px solid #334155;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        .meter-title {
+            font-size: 11px;
+            color: #94a3b8;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .digital-screen {
+            background: #020617;
+            color: #22c55e;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 32px;
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 6px;
+            border: 2px inset #1e293b;
+            text-shadow: 0 0 10px rgba(34,197,94,0.5);
+        }
+
+        .btn-bench {
+            background-color: #0284c7;
+            color: white;
+            font-weight: bold;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 13px;
+            margin-top: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .btn-bench:hover { background-color: #0369a1; }
+        .btn-export {
+            background-color: #16a34a;
+            margin-top: 8px;
+        }
+        .btn-export:hover { background-color: #15803d; }
+        table {
+            width: 100%;
+            font-size: 11px;
+            border-collapse: collapse;
+            margin-top: 8px;
+            background: #ffffff;
+            color: #1e293b;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 5px;
+            text-align: center;
+        }
+        th { background-color: #f1f5f9; color: #334155; font-size: 11px; }
+        textarea {
+            width: 100%;
+            height: 480px;
+            box-sizing: border-box;
+            font-size: 11.5px;
+            line-height: 1.5;
+            padding: 10px;
+            resize: none;
+            background: #ffffff;
+            color: #0f172a;
+            border: 2px solid #cbd5e1;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <header>
+        <h1>Superposition Theorem - Dual Circuit Bench Laboratory</h1>
+        <div style="font-size: 13px; color: #0284c7; margin-top: 4px; font-weight: bold;">Created by Dr. Nitin Phadkule | Govt. College of Engineering, Chh. Sambhajinagar</div>
+    </header>
+
+    <div id="statusBanner" class="status-banner">BENCH STATUS: Both Sources OFF (Toggle Switches to Activate)</div>
+
+    <div class="lab-grid">
+        <!-- RACK 1: CONFIGURATION & CONTROLS -->
+        <div>
+            <div class="rack-panel">
+                <div class="panel-header">Circuit & Source Controls</div>
+                
+                <div class="control-group" style="margin-top: 10px;">
+                    <label>Network Source Type:</label>
+                    <select id="sourceTypeSelect" onchange="updateBench()">
+                        <option value="voltage">Dual Voltage Sources (V1 & V2)</option>
+                        <option value="current">Dual Current Sources (I1 & I2)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label>Measurement Parameter:</label>
+                    <select id="measureTypeSelect" onchange="updateBench()">
+                        <option value="current">Load Current (IL)</option>
+                        <option value="voltage">Load Voltage (VL)</option>
+                    </select>
+                </div>
+
+                <div class="switches-bench">
+                    <div class="switch-unit">
+                        <div class="switch-label" id="lblSrc1">SOURCE V1</div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="switchV1" onchange="updateBench()">
+                            <span class="slider-toggle"></span>
+                        </label>
+                        <div><span id="led1" class="led-indicator"></span></div>
+                    </div>
+
+                    <div class="switch-unit">
+                        <div class="switch-label" id="lblSrc2">SOURCE V2</div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="switchV2" onchange="updateBench()">
+                            <span class="slider-toggle"></span>
+                        </label>
+                        <div><span id="led2" class="led-indicator"></span></div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label><span id="slider1Label">Regulated Supply V1:</span> <span id="v1Val" style="color:#0284c7;">12.0 V</span></label>
+                    <input type="range" id="v1Slider" min="1" max="24" step="0.5" value="12" oninput="updateBench()">
+                </div>
+
+                <div class="control-group">
+                    <label><span id="slider2Label">Regulated Supply V2:</span> <span id="v2Val" style="color:#0284c7;">6.0 V</span></label>
+                    <input type="range" id="v2Slider" min="0" max="20" step="0.5" value="6" oninput="updateBench()">
+                </div>
+
+                <div class="control-group">
+                    <label><span>Resistor R1:</span> <span id="r1Val" style="color:#0284c7;">100 Ω</span></label>
+                    <input type="range" id="r1Slider" min="10" max="500" step="10" value="100" oninput="updateBench()">
+                </div>
+
+                <div class="control-group">
+                    <label><span>Resistor R2:</span> <span id="r2Val" style="color:#0284c7;">200 Ω</span></label>
+                    <input type="range" id="r2Slider" min="10" max="500" step="10" value="200" oninput="updateBench()">
+                </div>
+
+                <div class="control-group">
+                    <label><span>Load Resistor R3:</span> <span id="r3Val" style="color:#0284c7;">150 Ω</span></label>
+                    <input type="range" id="r3Slider" min="10" max="500" step="10" value="150" oninput="updateBench()">
+                </div>
+
+                <button class="btn-bench" onclick="recordObservation()">Log Reading to Bench Table</button>
+            </div>
+        </div>
+
+        <!-- RACK 2: SCHEMATIC & DIGITAL METER -->
+        <div>
+            <div class="rack-panel">
+                <div class="panel-header">Circuit Schematic Diagram</div>
+                <canvas id="benchCanvas" width="580" height="210"></canvas>
+            </div>
+
+            <!-- DIGITAL METER PANEL -->
+            <div class="rack-panel">
+                <div class="panel-header" style="background:#0d9488; color:#fff;" id="meterHeader">Digital Meter Indicator</div>
+                <div class="digital-meter-panel">
+                    <div class="meter-title" id="meterTitle">Load Current Measured (IL)</div>
+                    <div id="digitalReadout" class="digital-screen">0.000 A</div>
+                </div>
+            </div>
+
+            <div class="rack-panel" style="margin-bottom: 0;">
+                <div class="panel-header" style="background:#0284c7; color:#fff;">Observation Log</div>
+                <div style="max-height: 140px; overflow-y: auto;">
+                    <table id="observationTable">
+                        <thead>
+                            <tr>
+                                <th>Trial</th>
+                                <th>Mode</th>
+                                <th>S1 Val</th>
+                                <th>S2 Val</th>
+                                <th>Measured Output</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Logged trials -->
+                        </tbody>
+                    </table>
+                </div>
+                <button class="btn-bench btn-export" onclick="exportHTMLReport()">Export Printable HTML Lab Report</button>
+            </div>
+        </div>
+
+        <!-- RACK 3: EXPERIMENTAL MANUAL -->
+        <div>
+            <div class="rack-panel" style="height: 100%; box-sizing: border-box;">
+                <div class="panel-header" style="background:#475569; color:#fff;">Laboratory Protocol</div>
+                <textarea readonly>
+EXPERIMENT PROTOCOL:
+Superposition Theorem (Dual Circuit Version)
+
+OBJECTIVE:
+To verify the Superposition Theorem across both Voltage Source (Thevenin) and Current Source (Norton) network configurations, measuring either load current or load voltage.
+
+PROCEDURE:
+1. Select source configuration ("Dual Voltage Sources" or "Dual Current Sources") and output parameter ("Load Current" or "Load Voltage").
+2. Turn ON both Source V1/I1 and V2/I2 switches to record total combined response.
+3. Deactivate individual sources (turn switch OFF, making voltage source 0V [short] or current source 0A [open]) to record individual contributions.
+4. Verify linear additivity for both current and voltage responses.
+5. Log trials and export your lab report.</textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById("benchCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let observationLog = [];
+
+    function updateBench() {
+        let sourceType = document.getElementById("sourceTypeSelect").value;
+        let measureType = document.getElementById("measureTypeSelect").value;
+
+        let s1Active = document.getElementById("switchV1").checked;
+        let s2Active = document.getElementById("switchV2").checked;
+
+        if(s1Active) document.getElementById("led1").classList.add("active");
+        else document.getElementById("led1").classList.remove("active");
+
+        if(s2Active) document.getElementById("led2").classList.add("active");
+        else document.getElementById("led2").classList.remove("active");
+
+        let val1_input = parseFloat(document.getElementById("v1Slider").value);
+        let val2_input = parseFloat(document.getElementById("v2Slider").value);
+        let R1 = parseFloat(document.getElementById("r1Slider").value);
+        let R2 = parseFloat(document.getElementById("r2Slider").value);
+        let R3 = parseFloat(document.getElementById("r3Slider").value);
+
+        if (sourceType === 'voltage') {
+            document.getElementById("lblSrc1").innerText = "SOURCE V1";
+            document.getElementById("lblSrc2").innerText = "SOURCE V2";
+            document.getElementById("slider1Label").innerText = "Regulated Supply V1:";
+            document.getElementById("slider2Label").innerText = "Regulated Supply V2:";
+            document.getElementById("v1Val").innerText = val1_input.toFixed(1) + " V";
+            document.getElementById("v2Val").innerText = val2_input.toFixed(1) + " V";
+        } else {
+            document.getElementById("lblSrc1").innerText = "SOURCE I1";
+            document.getElementById("lblSrc2").innerText = "SOURCE I2";
+            document.getElementById("slider1Label").innerText = "Current Source I1:";
+            document.getElementById("slider2Label").innerText = "Current Source I2:";
+            document.getElementById("v1Val").innerText = val1_input.toFixed(2) + " A";
+            document.getElementById("v2Val").innerText = val2_input.toFixed(2) + " A";
+        }
+
+        document.getElementById("r1Val").innerText = R1 + " Ω";
+        document.getElementById("r2Val").innerText = R2 + " Ω";
+        document.getElementById("r3Val").innerText = R3 + " Ω";
+
+        let S1 = s1Active ? val1_input : 0;
+        let S2 = s2Active ? val2_input : 0;
+
+        let measuredVal = 0;
+
+        if (sourceType === 'voltage') {
+            let par1 = (R2 * R3) / (R2 + R3);
+            let req1 = R1 + par1;
+            let i1 = (S1 / req1) * (R2 / (R2 + R3));
+
+            let par2 = (R1 * R3) / (R1 + R3);
+            let req2 = R2 + par2;
+            let i2 = (S2 / req2) * (R1 / (R1 + R3));
+            let iL = i1 + i2;
+            measuredVal = (measureType === 'current') ? iL : (iL * R3);
+        } else {
+            let iL1 = S1 * (R1 / (R1 + R2 + R3));
+            let iL2 = S2 * (R2 / (R1 + R2 + R3));
+            let iL = iL1 + iL2;
+            measuredVal = (measureType === 'current') ? iL : (iL * R3);
+        }
+
+        let unitStr = (measureType === 'current') ? " A" : " V";
+        let paramName = (measureType === 'current') ? "Load Current (IL)" : "Load Voltage (VL)";
+
+        document.getElementById("meterTitle").innerText = paramName + " Measured";
+        document.getElementById("digitalReadout").innerText = measuredVal.toFixed(3) + unitStr;
+
+        let condName = (s1Active && s2Active) ? 'Both Active' : (s1Active ? "Source 1 Only" : (s2Active ? "Source 2 Only" : "Both Off"));
+        document.getElementById("statusBanner").innerText = "BENCH STATUS: " + (sourceType === 'voltage' ? 'Voltage Sources' : 'Current Sources') + " | " + condName + " | Output = " + measuredVal.toFixed(3) + unitStr;
+
+        drawSchematic(sourceType, S1, S2, R1, R2, R3);
+
+        return { mode: sourceType, param: measureType, S1: val1_input, S2: val2_input, s1: s1Active, s2: s2Active, condName, measuredVal, unitStr };
+    }
+
+    function drawSchematic(type, S1, S2, R1, R2, R3) {
+        if (!canvas.getContext) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        ctx.strokeStyle = "#334155";
+        ctx.lineWidth = 2.5;
+
+        ctx.beginPath(); ctx.moveTo(70, 135); ctx.lineTo(70, 105); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(70, 75); ctx.lineTo(70, 45); ctx.lineTo(160, 45); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(220, 45); ctx.lineTo(360, 45); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(510, 135); ctx.lineTo(510, 105); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(510, 75); ctx.lineTo(510, 45); ctx.lineTo(420, 45); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(70, 135); ctx.lineTo(510, 135); ctx.stroke();
+
+        // Source 1
+        ctx.beginPath();
+        ctx.arc(70, 90, 16, 0, 2 * Math.PI);
+        ctx.fillStyle = S1 === 0 ? "#94a3b8" : (type === 'voltage' ? "#ef4444" : "#8b5cf6");
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = "#0f172a";
+        ctx.font = "bold 11px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText(type === 'voltage' ? "V1" : "I1", 70, 94);
+
+        // Source 2
+        ctx.beginPath();
+        ctx.arc(510, 90, 16, 0, 2 * Math.PI);
+        ctx.fillStyle = S2 === 0 ? "#94a3b8" : (type === 'voltage' ? "#3b82f6" : "#ec4899");
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = "#0f172a";
+        ctx.fillText(type === 'voltage' ? "V2" : "I2", 510, 94);
+
+        // Resistors
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(160, 35, 60, 20); ctx.strokeRect(160, 35, 60, 20);
+        ctx.fillStyle = "#0f172a"; ctx.fillText("R1", 190, 50);
+
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(360, 35, 60, 20); ctx.strokeRect(360, 35, 60, 20);
+        ctx.fillStyle = "#0f172a"; ctx.fillText("R2", 390, 50);
+
+        ctx.beginPath(); ctx.moveTo(290, 45); ctx.lineTo(290, 75); ctx.stroke();
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(250, 75, 80, 22); ctx.strokeRect(250, 75, 80, 22);
+        ctx.fillStyle = "#0f172a"; ctx.fillText("R3 (Load)", 290, 91);
+
+        ctx.beginPath(); ctx.moveTo(290, 97); ctx.lineTo(290, 135); ctx.stroke();
+    }
+
+    function recordObservation() {
+        let data = updateBench();
+        observationLog.push(data);
+
+        let tbody = document.querySelector("#observationTable tbody");
+        let row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${observationLog.length}</td>
+            <td>${data.mode.toUpperCase()} (${data.param.toUpperCase()})</td>
+            <td>${data.S1.toFixed(1)}</td>
+            <td>${data.S2.toFixed(1)}</td>
+            <td><b>${data.measuredVal.toFixed(3)}${data.unitStr}</b></td>
+        `;
+        tbody.appendChild(row);
+    }
+
+    function exportHTMLReport() {
+        let reportWindow = window.open('', '_blank');
+        
+        let tableRows = '';
+        if (observationLog.length === 0) {
+            tableRows = `<tr><td colspan="5" style="color: #666; font-style: italic;">No bench readings logged yet.</td></tr>`;
+        } else {
+            observationLog.forEach((item, idx) => {
+                tableRows += `
+                    <tr>
+                        <td>${idx + 1}</td>
+                        <td>${item.mode.toUpperCase()} (${item.param.toUpperCase()})</td>
+                        <td>${item.S1.toFixed(1)}</td>
+                        <td>${item.S2.toFixed(1)}</td>
+                        <td><b>${item.measuredVal.toFixed(3)}${item.unitStr}</b></td>
+                    </tr>
+                `;
+            });
+        }
+
+        let htmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Superposition Theorem - Dual Circuit Laboratory Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; color: #222; line-height: 1.4; }
+        .report-header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 15px; margin-bottom: 20px; }
+        .report-header h1 { margin: 0; font-size: 22px; color: #0284c7; }
+        .details-box { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 13px; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 25px; }
+        th, td { border: 1px solid #999; padding: 7px; text-align: center; font-size: 12px; }
+        th { background-color: #0284c7; color: #fff; }
+        .question-section { margin-top: 20px; }
+        .question-item { margin-bottom: 15px; font-size: 13px; }
+        .question-item label { font-weight: bold; display: block; margin-bottom: 4px; color: #333; }
+        .question-item textarea { width: 100%; height: 50px; padding: 6px; box-sizing: border-box; font-family: Arial, sans-serif; font-size: 12px; border: 1px solid #aaa; border-radius: 4px; }
+        .grading-box { margin-top: 30px; border: 2px solid #333; padding: 12px; width: 300px; float: right; text-align: right; font-weight: bold; font-size: 14px; background: #f9f9f9; }
+        .footer { margin-top: 120px; clear: both; display: flex; justify-content: flex-end; font-weight: bold; font-size: 13px; }
+        @media print {
+            textarea { border: none; background: #fff; resize: none; }
+            button { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="report-header">
+        <h1>Govt. College of Engineering, Chh. Sambhajinagar</h1>
+        <div style="font-size: 15px; margin-top: 4px;">Department of Electrical & Telecommunication Engineering</div>
+        <div style="font-weight: bold; color: #555; margin-top: 4px;">Laboratory Experiment Report: Superposition Theorem (Dual Circuit Version)</div>
+    </div>
+
+    <div class="details-box">
+        <div>Student Name: <input type="text" placeholder="Enter full name" style="border:none; border-bottom:1px solid #000; width:220px; font-size:13px;"></div>
+        <div>Roll Number: <input type="text" placeholder="Enter roll no" style="border:none; border-bottom:1px solid #000; width:130px; font-size:13px;"></div>
+        <div>Instructor Name: <input type="text" placeholder="Enter instructor name" style="border:none; border-bottom:1px solid #000; width:180px; font-size:13px;"></div>
+    </div>
+
+    <h3>1. Experimental Observation Data</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Trial</th>
+                <th>Configuration & Parameter</th>
+                <th>Source 1 Value</th>
+                <th>Source 2 Value</th>
+                <th>Measured Response</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${tableRows}
+        </tbody>
+    </table>
+
+    <div class="question-section">
+        <h3>2. Viva Questions & Simple Answers</h3>
+        
+        <div class="question-item">
+            <label>Q1. How does the deactivation rule differ between voltage sources and current sources?</label>
+            <textarea placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-item">
+            <label>Q2. Can the Superposition Theorem be applied when measuring load voltage instead of load current? Why?</label>
+            <textarea placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-item">
+            <label>Q3. What is the fundamental difference between Thevenin's and Norton's equivalent representations in this network?</label>
+            <textarea placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-item">
+            <label>Q4. Why does linearity ensure that superposition holds true for both current and voltage outputs?</label>
+            <textarea placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-item">
+            <label>Q5. What happens to the circuit response if one of the current sources is opened (deactivated)?</label>
+            <textarea placeholder="Type your answer here..."></textarea>
+        </div>
+    </div>
+
+    <div class="grading-box">
+        Marks Obtained: ________ / 10<br><br>
+        Instructor Remarks: <input type="text" style="border:none; border-bottom:1px solid #000; width:100%; margin-top:5px;">
+    </div>
+
+    <div class="footer">
+        <div>Faculty Signature: ______________________</div>
+    </div>
+
+    <div style="text-align: center; margin-top: 50px;">
+        <button onclick="window.print()" style="padding: 10px 25px; background: #0284c7; color: #fff; border: none; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 14px;">Print / Save as PDF</button>
+    </div>
+</body>
+</html>`;
+
+        reportWindow.document.write(htmlContent);
+        reportWindow.document.close();
+        reportWindow.focus();
+    }
+
+    window.onload = function() {
+        updateBench();
+    };
+</script>
+</body>
+</html>
