@@ -335,7 +335,7 @@
                         <thead>
                             <tr>
                                 <th>Trial</th>
-                                <th>Mode</th>
+                                <th>Active Condition</th>
                                 <th>S1 Val</th>
                                 <th>S2 Val</th>
                                 <th>Measured Output</th>
@@ -362,9 +362,9 @@ OBJECTIVE:
 To verify the Superposition Theorem across both Voltage Source (Thevenin) and Current Source (Norton) network configurations, measuring either load current or load voltage.
 
 PROCEDURE:
-1. Select source configuration ("Dual Voltage Sources" or "Dual Current Sources") and output parameter ("Load Current" or "Load Voltage").
-2. Turn ON both Source V1/I1 and V2/I2 switches to record total combined response.
-3. Deactivate individual sources (turn switch OFF, making voltage source 0V [short] or current source 0A [open]) to record individual contributions.
+1. Select source configuration and output parameter.
+2. Turn ON both Source 1 and Source 2 switches to record total combined response.
+3. Deactivate individual sources to record individual contributions.
 4. Verify linear additivity for both current and voltage responses.
 5. Log trials and export your lab report.</textarea>
             </div>
@@ -397,28 +397,30 @@ PROCEDURE:
         let R2 = parseFloat(document.getElementById("r2Slider").value);
         let R3 = parseFloat(document.getElementById("r3Slider").value);
 
+        let srcUnit = (sourceType === 'voltage') ? 'V' : 'A';
+
+        let S1 = s1Active ? val1_input : 0;
+        let S2 = s2Active ? val2_input : 0;
+
         if (sourceType === 'voltage') {
             document.getElementById("lblSrc1").innerText = "SOURCE V1";
             document.getElementById("lblSrc2").innerText = "SOURCE V2";
             document.getElementById("slider1Label").innerText = "Regulated Supply V1:";
             document.getElementById("slider2Label").innerText = "Regulated Supply V2:";
-            document.getElementById("v1Val").innerText = val1_input.toFixed(1) + " V";
-            document.getElementById("v2Val").innerText = val2_input.toFixed(1) + " V";
+            document.getElementById("v1Val").innerText = S1.toFixed(1) + " V";
+            document.getElementById("v2Val").innerText = S2.toFixed(1) + " V";
         } else {
             document.getElementById("lblSrc1").innerText = "SOURCE I1";
             document.getElementById("lblSrc2").innerText = "SOURCE I2";
             document.getElementById("slider1Label").innerText = "Current Source I1:";
             document.getElementById("slider2Label").innerText = "Current Source I2:";
-            document.getElementById("v1Val").innerText = val1_input.toFixed(2) + " A";
-            document.getElementById("v2Val").innerText = val2_input.toFixed(2) + " A";
+            document.getElementById("v1Val").innerText = S1.toFixed(2) + " A";
+            document.getElementById("v2Val").innerText = S2.toFixed(2) + " A";
         }
 
         document.getElementById("r1Val").innerText = R1 + " Ω";
         document.getElementById("r2Val").innerText = R2 + " Ω";
         document.getElementById("r3Val").innerText = R3 + " Ω";
-
-        let S1 = s1Active ? val1_input : 0;
-        let S2 = s2Active ? val2_input : 0;
 
         let measuredVal = 0;
 
@@ -445,12 +447,22 @@ PROCEDURE:
         document.getElementById("meterTitle").innerText = paramName + " Measured";
         document.getElementById("digitalReadout").innerText = measuredVal.toFixed(3) + unitStr;
 
-        let condName = (s1Active && s2Active) ? 'Both Active' : (s1Active ? "Source 1 Only" : (s2Active ? "Source 2 Only" : "Both Off"));
-        document.getElementById("statusBanner").innerText = "BENCH STATUS: " + (sourceType === 'voltage' ? 'Voltage Sources' : 'Current Sources') + " | " + condName + " | Output = " + measuredVal.toFixed(3) + unitStr;
+        let conditionDesc = "";
+        if (s1Active && s2Active) {
+            conditionDesc = "Both Sources Active (" + paramName + ")";
+        } else if (s1Active && !s2Active) {
+            conditionDesc = "Source 1 Only (" + (sourceType === 'voltage' ? 'V2 Shorted' : 'I2 Opened') + ")";
+        } else if (!s1Active && s2Active) {
+            conditionDesc = "Source 2 Only (" + (sourceType === 'voltage' ? 'V1 Shorted' : 'I1 Opened') + ")";
+        } else {
+            conditionDesc = "Both Sources Off";
+        }
+
+        document.getElementById("statusBanner").innerText = "BENCH STATUS: " + conditionDesc + " | Output = " + measuredVal.toFixed(3) + unitStr;
 
         drawSchematic(sourceType, S1, S2, R1, R2, R3);
 
-        return { mode: sourceType, param: measureType, S1: val1_input, S2: val2_input, s1: s1Active, s2: s2Active, condName, measuredVal, unitStr };
+        return { modeText: conditionDesc, param: measureType, S1: S1, S2: S2, s1: s1Active, s2: s2Active, measuredVal, unitStr, srcUnit };
     }
 
     function drawSchematic(type, S1, S2, R1, R2, R3) {
@@ -512,9 +524,9 @@ PROCEDURE:
         let row = document.createElement("tr");
         row.innerHTML = `
             <td>${observationLog.length}</td>
-            <td>${data.mode.toUpperCase()} (${data.param.toUpperCase()})</td>
-            <td>${data.S1.toFixed(1)}</td>
-            <td>${data.S2.toFixed(1)}</td>
+            <td><b>${data.modeText}</b></td>
+            <td>${data.S1.toFixed(1)} ${data.srcUnit}</td>
+            <td>${data.S2.toFixed(1)} ${data.srcUnit}</td>
             <td><b>${data.measuredVal.toFixed(3)}${data.unitStr}</b></td>
         `;
         tbody.appendChild(row);
@@ -531,9 +543,9 @@ PROCEDURE:
                 tableRows += `
                     <tr>
                         <td>${idx + 1}</td>
-                        <td>${item.mode.toUpperCase()} (${item.param.toUpperCase()})</td>
-                        <td>${item.S1.toFixed(1)}</td>
-                        <td>${item.S2.toFixed(1)}</td>
+                        <td><b>${item.modeText}</b></td>
+                        <td>${item.S1.toFixed(1)} ${item.srcUnit}</td>
+                        <td>${item.S2.toFixed(1)} ${item.srcUnit}</td>
                         <td><b>${item.measuredVal.toFixed(3)}${item.unitStr}</b></td>
                     </tr>
                 `;
@@ -583,7 +595,7 @@ PROCEDURE:
         <thead>
             <tr>
                 <th>Trial</th>
-                <th>Configuration & Parameter</th>
+                <th>Active Condition</th>
                 <th>Source 1 Value</th>
                 <th>Source 2 Value</th>
                 <th>Measured Response</th>
