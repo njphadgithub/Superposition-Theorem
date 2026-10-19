@@ -81,45 +81,154 @@
             margin-bottom: 15px;
             border: 2px solid #facc15;
         }
-        canvas { background: #ffffff; display: block; margin: 0 auto; border: 2px solid #cbd5e1; border-radius: 6px; }
-        .control-group { margin: 12px 0; }
-        .control-group label { display: flex; justify-content: space-between; font-weight: bold; font-size: 12px; margin-bottom: 5px; color: #475569; }
-        select, input[type=range], input[type=number] { width: 100%; padding: 6px; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 4px; background: #ffffff; font-size: 12px; }
+        canvas {
+            background: #ffffff;
+            display: block;
+            margin: 0 auto;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+        }
+        .control-group {
+            margin: 12px 0;
+        }
+        .control-group label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 5px;
+            color: #475569;
+        }
+        select, input[type=range] {
+            width: 100%;
+            padding: 6px;
+            box-sizing: border-box;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            background: #ffffff;
+            font-size: 12px;
+        }
 
         /* TOGGLE SWITCHES */
-        .switches-bench { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #ffffff; padding: 12px; border-radius: 6px; border: 2px solid #e2e8f0; margin-bottom: 15px; }
-        .switch-unit { text-align: center; }
-        .switch-label { font-size: 11px; font-weight: bold; color: #64748b; margin-bottom: 5px; }
-        .toggle-switch { position: relative; display: inline-block; width: 60px; height: 30px; }
+        .switches-bench {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            background: #ffffff;
+            padding: 12px;
+            border-radius: 6px;
+            border: 2px solid #e2e8f0;
+            margin-bottom: 15px;
+        }
+        .switch-unit {
+            text-align: center;
+        }
+        .switch-label {
+            font-size: 11px;
+            font-weight: bold;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .slider-toggle { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .3s; border-radius: 30px; border: 2px solid #94a3b8; }
-        .slider-toggle:before { position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 2px; background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .slider-toggle {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #cbd5e1; transition: .3s; border-radius: 30px; border: 2px solid #94a3b8;
+        }
+        .slider-toggle:before {
+            position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 2px;
+            background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
         input:checked + .slider-toggle { background-color: #16a34a; }
         input:checked + .slider-toggle:before { transform: translateX(30px); }
-        .led-indicator { width: 10px; height: 10px; border-radius: 50%; background: #cbd5e1; display: inline-block; margin-top: 4px; }
+        .led-indicator {
+            width: 10px; height: 10px; border-radius: 50%; background: #cbd5e1; display: inline-block; margin-top: 4px;
+        }
         .led-indicator.active { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
 
         /* DIGITAL METER PANEL */
-        .digital-meter-panel { background: #0f172a; border: 3px solid #334155; border-radius: 8px; padding: 15px; text-align: center; }
-        .meter-title { font-size: 11px; color: #94a3b8; font-weight: bold; letter-spacing: 1px; margin-bottom: 8px; text-transform: uppercase; }
-        .digital-screen { background: #020617; color: #22c55e; font-family: 'Courier New', Courier, monospace; font-size: 32px; font-weight: bold; padding: 12px; border-radius: 6px; border: 2px inset #1e293b; text-shadow: 0 0 10px rgba(34,197,94,0.5); }
+        .digital-meter-panel {
+            background: #0f172a;
+            border: 3px solid #334155;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        .meter-title {
+            font-size: 11px;
+            color: #94a3b8;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .digital-screen {
+            background: #020617;
+            color: #22c55e;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 32px;
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 6px;
+            border: 2px inset #1e293b;
+            text-shadow: 0 0 10px rgba(34,197,94,0.5);
+        }
 
-        .btn-bench { background-color: #0284c7; color: white; font-weight: bold; border: none; padding: 10px; border-radius: 4px; cursor: pointer; width: 100%; font-size: 13px; margin-top: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn-bench {
+            background-color: #0284c7;
+            color: white;
+            font-weight: bold;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 13px;
+            margin-top: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
         .btn-bench:hover { background-color: #0369a1; }
-        .btn-export { background-color: #16a34a; margin-top: 8px; }
+        .btn-export {
+            background-color: #16a34a;
+            margin-top: 8px;
+        }
         .btn-export:hover { background-color: #15803d; }
-        .small-btn { padding: 8px 10px; font-size: 12px; border-radius: 4px; border: none; cursor: pointer; }
-        .btn-secondary { background:#64748b; color:#fff; }
-        .btn-danger { background:#ef4444; color:#fff; }
-
-        table { width: 100%; font-size: 11px; border-collapse: collapse; margin-top: 8px; background: #ffffff; color: #1e293b; border-radius: 4px; overflow: hidden; }
-        th, td { border: 1px solid #cbd5e1; padding: 5px; text-align: center; }
+        table {
+            width: 100%;
+            font-size: 11px;
+            border-collapse: collapse;
+            margin-top: 8px;
+            background: #ffffff;
+            color: #1e293b;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 5px;
+            text-align: center;
+        }
         th { background-color: #f1f5f9; color: #334155; font-size: 11px; }
-        textarea { width: 100%; height: 480px; box-sizing: border-box; font-size: 11.5px; line-height: 1.5; padding: 10px; resize: none; background: #ffffff; color: #0f172a; border: 2px solid #cbd5e1; border-radius: 4px; }
-
-        /* animation styles */
-        .particle { position: absolute; width: 8px; height: 8px; border-radius: 50%; background: rgba(34,197,94,0.95); box-shadow: 0 0 6px rgba(34,197,94,0.7); pointer-events: none; }
-        #chartCanvas { width:100%; height: 80px; background: #fff; border:1px solid #cbd5e1; border-radius:4px; }
+        textarea {
+            width: 100%;
+            height: 480px;
+            box-sizing: border-box;
+            font-size: 11.5px;
+            line-height: 1.5;
+            padding: 10px;
+            resize: none;
+            background: #ffffff;
+            color: #0f172a;
+            border: 2px solid #cbd5e1;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -176,45 +285,27 @@
 
                 <div class="control-group">
                     <label><span id="slider1Label">Regulated Supply V1:</span> <span id="v1Val" style="color:#0284c7;">12.0 V</span></label>
-                    <input type="range" id="v1Slider" min="1" max="24" step="0.5" value="12" oninput="syncNumeric('v1')">
-                    <input type="number" id="v1Number" min="1" max="24" step="0.5" value="12" oninput="syncSlider('v1')" style="margin-top:6px;">
+                    <input type="range" id="v1Slider" min="1" max="24" step="0.5" value="12" oninput="updateBench()">
                 </div>
 
                 <div class="control-group">
                     <label><span id="slider2Label">Regulated Supply V2:</span> <span id="v2Val" style="color:#0284c7;">6.0 V</span></label>
-                    <input type="range" id="v2Slider" min="0" max="20" step="0.5" value="6" oninput="syncNumeric('v2')">
-                    <input type="number" id="v2Number" min="0" max="20" step="0.5" value="6" oninput="syncSlider('v2')" style="margin-top:6px;">
+                    <input type="range" id="v2Slider" min="0" max="20" step="0.5" value="6" oninput="updateBench()">
                 </div>
 
                 <div class="control-group">
                     <label><span>Resistor R1:</span> <span id="r1Val" style="color:#0284c7;">100 Ω</span></label>
-                    <input type="range" id="r1Slider" min="10" max="500" step="10" value="100" oninput="syncNumeric('r1')">
-                    <input type="number" id="r1Number" min="10" max="500" step="10" value="100" oninput="syncSlider('r1')" style="margin-top:6px;">
+                    <input type="range" id="r1Slider" min="10" max="500" step="10" value="100" oninput="updateBench()">
                 </div>
 
                 <div class="control-group">
                     <label><span>Resistor R2:</span> <span id="r2Val" style="color:#0284c7;">200 Ω</span></label>
-                    <input type="range" id="r2Slider" min="10" max="500" step="10" value="200" oninput="syncNumeric('r2')">
-                    <input type="number" id="r2Number" min="10" max="500" step="10" value="200" oninput="syncSlider('r2')" style="margin-top:6px;">
+                    <input type="range" id="r2Slider" min="10" max="500" step="10" value="200" oninput="updateBench()">
                 </div>
 
                 <div class="control-group">
                     <label><span>Load Resistor R3:</span> <span id="r3Val" style="color:#0284c7;">150 Ω</span></label>
-                    <input type="range" id="r3Slider" min="10" max="500" step="10" value="150" oninput="syncNumeric('r3')">
-                    <input type="number" id="r3Number" min="10" max="500" step="10" value="150" oninput="syncSlider('r3')" style="margin-top:6px;">
-                </div>
-
-                <div style="display:flex; gap:8px; margin-top:8px;">
-                    <button class="small-btn btn-secondary" onclick="randomizeBench()">Randomize</button>
-                    <button class="small-btn btn-secondary" onclick="resetBench()">Reset Bench</button>
-                    <button class="small-btn btn-danger" onclick="resetLog()">Clear Log</button>
-                </div>
-
-                <div style="margin-top:10px; display:flex; gap:8px; align-items:center;">
-                    <label style="font-size:12px; margin:0;">Animate Flow:</label>
-                    <label class="toggle-switch" style="margin-right:6px;"><input type="checkbox" id="animateFlow" checked onchange="toggleAnimation()"><span class="slider-toggle"></span></label>
-                    <label style="font-size:12px; margin:0;">Smooth Meter:</label>
-                    <label class="toggle-switch"><input type="checkbox" id="smoothMeter" checked onchange="toggleSmooth()"><span class="slider-toggle"></span></label>
+                    <input type="range" id="r3Slider" min="10" max="500" step="10" value="150" oninput="updateBench()">
                 </div>
 
                 <button class="btn-bench" onclick="recordObservation()">Log Reading to Bench Table</button>
@@ -225,10 +316,7 @@
         <div>
             <div class="rack-panel">
                 <div class="panel-header">Circuit Schematic Diagram</div>
-                <div style="position:relative;">
-                    <canvas id="benchCanvas" width="580" height="210"></canvas>
-                    <!-- particle layer will be drawn on same canvas for simplicity -->
-                </div>
+                <canvas id="benchCanvas" width="580" height="210"></canvas>
             </div>
 
             <!-- DIGITAL METER PANEL -->
@@ -237,7 +325,6 @@
                 <div class="digital-meter-panel">
                     <div class="meter-title" id="meterTitle">Load Current Measured (IL)</div>
                     <div id="digitalReadout" class="digital-screen">0.000 A</div>
-                    <canvas id="chartCanvas" width="520" height="80"></canvas>
                 </div>
             </div>
 
@@ -288,59 +375,8 @@ PROCEDURE:
 <script>
     const canvas = document.getElementById("benchCanvas");
     const ctx = canvas.getContext("2d");
-    const chart = document.getElementById('chartCanvas');
-    const chartCtx = chart.getContext('2d');
 
     let observationLog = [];
-    let animationEnabled = true;
-    let smoothMeterEnabled = true;
-    let displayedVal = 0;
-    let history = []; // recent measured values for chart
-    const historyMax = 60;
-
-    // particles along top wire
-    let particles = [];
-    const maxParticles = 30;
-
-    function initParticles() {
-        particles = [];
-        for (let i=0;i<maxParticles;i++) {
-            particles.push({t: Math.random(), speed: 0.002 + Math.random()*0.006});
-        }
-    }
-    initParticles();
-
-    function syncNumeric(id) {
-        const slider = document.getElementById(id+'Slider');
-        const number = document.getElementById(id+'Number');
-        number.value = slider.value;
-        updateBench();
-    }
-    function syncSlider(id) {
-        const slider = document.getElementById(id+'Slider');
-        const number = document.getElementById(id+'Number');
-        slider.value = number.value;
-        updateBench();
-    }
-
-    function toggleAnimation(){ animationEnabled = document.getElementById('animateFlow').checked; }
-    function toggleSmooth(){ smoothMeterEnabled = document.getElementById('smoothMeter').checked; }
-
-    function randomizeBench(){
-        document.getElementById('v1Slider').value = (Math.random()*23+1).toFixed(1);
-        document.getElementById('v2Slider').value = (Math.random()*20).toFixed(1);
-        document.getElementById('r1Slider').value = Math.round(10 + Math.random()*490);
-        document.getElementById('r2Slider').value = Math.round(10 + Math.random()*490);
-        document.getElementById('r3Slider').value = Math.round(10 + Math.random()*490);
-        // sync numeric inputs
-        ['v1','v2','r1','r2','r3'].forEach(id => syncNumeric(id));
-    }
-    function resetBench(){
-        document.getElementById('v1Slider').value=12; document.getElementById('v2Slider').value=6;
-        document.getElementById('r1Slider').value=100; document.getElementById('r2Slider').value=200; document.getElementById('r3Slider').value=150;
-        ['v1','v2','r1','r2','r3'].forEach(id => syncNumeric(id));
-    }
-    function resetLog(){ observationLog = []; document.querySelector('#observationTable tbody').innerHTML=''; history=[]; }
 
     function updateBench() {
         let sourceType = document.getElementById("sourceTypeSelect").value;
@@ -360,12 +396,6 @@ PROCEDURE:
         let R1 = parseFloat(document.getElementById("r1Slider").value);
         let R2 = parseFloat(document.getElementById("r2Slider").value);
         let R3 = parseFloat(document.getElementById("r3Slider").value);
-
-        document.getElementById('v1Number').value = val1_input;
-        document.getElementById('v2Number').value = val2_input;
-        document.getElementById('r1Number').value = R1;
-        document.getElementById('r2Number').value = R2;
-        document.getElementById('r3Number').value = R3;
 
         let srcUnit = (sourceType === 'voltage') ? 'V' : 'A';
 
@@ -411,22 +441,11 @@ PROCEDURE:
             measuredVal = (measureType === 'current') ? iL : (iL * R3);
         }
 
-        // push to history for chart
-        history.push(measuredVal);
-        if (history.length > historyMax) history.shift();
-
         let unitStr = (measureType === 'current') ? " A" : " V";
         let paramName = (measureType === 'current') ? "Load Current (IL)" : "Load Voltage (VL)";
 
         document.getElementById("meterTitle").innerText = paramName + " Measured";
-
-        // smooth meter animation: displayedVal -> measuredVal
-        if (!smoothMeterEnabled) {
-            displayedVal = measuredVal;
-            document.getElementById("digitalReadout").innerText = measuredVal.toFixed(3) + unitStr;
-        } else {
-            // digitalReadout will be updated inside animation loop for smoothing
-        }
+        document.getElementById("digitalReadout").innerText = measuredVal.toFixed(3) + unitStr;
 
         let conditionDesc = "";
         if (s1Active && s2Active) {
@@ -453,7 +472,6 @@ PROCEDURE:
         ctx.strokeStyle = "#334155";
         ctx.lineWidth = 2.5;
 
-        // wires
         ctx.beginPath(); ctx.moveTo(70, 135); ctx.lineTo(70, 105); ctx.stroke();
         ctx.beginPath(); ctx.moveTo(70, 75); ctx.lineTo(70, 45); ctx.lineTo(160, 45); ctx.stroke();
         ctx.beginPath(); ctx.moveTo(220, 45); ctx.lineTo(360, 45); ctx.stroke();
@@ -462,66 +480,40 @@ PROCEDURE:
         ctx.beginPath(); ctx.moveTo(70, 135); ctx.lineTo(510, 135); ctx.stroke();
 
         // Source 1
-        ctx.beginPath(); ctx.arc(70, 90, 16, 0, 2 * Math.PI);
+        ctx.beginPath();
+        ctx.arc(70, 90, 16, 0, 2 * Math.PI);
         ctx.fillStyle = S1 === 0 ? "#94a3b8" : (type === 'voltage' ? "#ef4444" : "#8b5cf6");
-        ctx.fill(); ctx.stroke(); ctx.fillStyle = "#0f172a"; ctx.font = "bold 11px Arial"; ctx.textAlign = "center"; ctx.fillText(type === 'voltage' ? "V1" : "I1", 70, 94);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = "#0f172a";
+        ctx.font = "bold 11px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText(type === 'voltage' ? "V1" : "I1", 70, 94);
 
         // Source 2
-        ctx.beginPath(); ctx.arc(510, 90, 16, 0, 2 * Math.PI);
+        ctx.beginPath();
+        ctx.arc(510, 90, 16, 0, 2 * Math.PI);
         ctx.fillStyle = S2 === 0 ? "#94a3b8" : (type === 'voltage' ? "#3b82f6" : "#ec4899");
-        ctx.fill(); ctx.stroke(); ctx.fillStyle = "#0f172a"; ctx.fillText(type === 'voltage' ? "V2" : "I2", 510, 94);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = "#0f172a";
+        ctx.fillText(type === 'voltage' ? "V2" : "I2", 510, 94);
 
         // Resistors
-        ctx.fillStyle = "#ffffff"; ctx.fillRect(160, 35, 60, 20); ctx.strokeRect(160, 35, 60, 20); ctx.fillStyle = "#0f172a"; ctx.fillText("R1", 190, 50);
-        ctx.fillStyle = "#ffffff"; ctx.fillRect(360, 35, 60, 20); ctx.strokeRect(360, 35, 60, 20); ctx.fillStyle = "#0f172a"; ctx.fillText("R2", 390, 50);
-        ctx.beginPath(); ctx.moveTo(290, 45); ctx.lineTo(290, 75); ctx.stroke(); ctx.fillStyle = "#ffffff"; ctx.fillRect(250, 75, 80, 22); ctx.strokeRect(250, 75, 80, 22); ctx.fillStyle = "#0f172a"; ctx.fillText("R3 (Load)", 290, 91);
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(160, 35, 60, 20); ctx.strokeRect(160, 35, 60, 20);
+        ctx.fillStyle = "#0f172a"; ctx.fillText("R1", 190, 50);
+
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(360, 35, 60, 20); ctx.strokeRect(360, 35, 60, 20);
+        ctx.fillStyle = "#0f172a"; ctx.fillText("R2", 390, 50);
+
+        ctx.beginPath(); ctx.moveTo(290, 45); ctx.lineTo(290, 75); ctx.stroke();
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(250, 75, 80, 22); ctx.strokeRect(250, 75, 80, 22);
+        ctx.fillStyle = "#0f172a"; ctx.fillText("R3 (Load)", 290, 91);
+
         ctx.beginPath(); ctx.moveTo(290, 97); ctx.lineTo(290, 135); ctx.stroke();
-
-        // draw particles flows when animation enabled
-        if (animationEnabled) drawParticles();
-        drawChart();
-    }
-
-    function drawParticles(){
-        // We'll draw small glowing circles moving along top wire segments from left to center and from right to center
-        // Path A: from x=70 to x=290 at y=45
-        // Path B: from x=510 to x=290 at y=45
-        for (let p of particles){
-            p.t += p.speed * (1 + Math.random()*0.4);
-            if (p.t > 1) p.t = 0;
-            // half particles go left->center, half go right->center
-            let idx = particles.indexOf(p);
-            let side = idx % 2 === 0 ? 'L' : 'R';
-            let x, y=45;
-            if (side==='L'){
-                x = 70 + (290-70) * p.t;
-            } else {
-                x = 510 - (510-290) * p.t;
-            }
-            // draw glow
-            ctx.beginPath();
-            let alpha = 0.6 + 0.4*Math.sin(p.t*Math.PI*2);
-            ctx.fillStyle = `rgba(34,197,94,${alpha})`;
-            ctx.arc(x, y, 4, 0, 2*Math.PI);
-            ctx.fill();
-        }
-    }
-
-    function drawChart(){
-        // simple sparkline for history
-        chartCtx.clearRect(0,0,chart.width,chart.height);
-        chartCtx.fillStyle='#f8fafc'; chartCtx.fillRect(0,0,chart.width,chart.height);
-        if(history.length<2) return;
-        const w = chart.width; const h = chart.height; const max = Math.max(...history); const min = Math.min(...history);
-        const range = (max-min) || 1;
-        chartCtx.beginPath();
-        chartCtx.strokeStyle='#0284c7'; chartCtx.lineWidth=2;
-        for(let i=0;i<history.length;i++){
-            const x = (i/(historyMax-1))*w;
-            const y = h - ((history[i]-min)/range)*h;
-            if(i===0) chartCtx.moveTo(x,y); else chartCtx.lineTo(x,y);
-        }
-        chartCtx.stroke();
     }
 
     function recordObservation() {
@@ -533,9 +525,9 @@ PROCEDURE:
         row.innerHTML = `
             <td>${observationLog.length}</td>
             <td><b>${data.modeText}</b></td>
-            <td>${data.S1.toFixed(2)} ${data.srcUnit}</td>
-            <td>${data.S2.toFixed(2)} ${data.srcUnit}</td>
-            <td><b>${data.measuredVal.toFixed(4)}${data.unitStr}</b></td>
+            <td>${data.S1.toFixed(1)} ${data.srcUnit}</td>
+            <td>${data.S2.toFixed(1)} ${data.srcUnit}</td>
+            <td><b>${data.measuredVal.toFixed(3)}${data.unitStr}</b></td>
         `;
         tbody.appendChild(row);
     }
@@ -552,9 +544,9 @@ PROCEDURE:
                     <tr>
                         <td>${idx + 1}</td>
                         <td><b>${item.modeText}</b></td>
-                        <td>${item.S1.toFixed(2)} ${item.srcUnit}</td>
-                        <td>${item.S2.toFixed(2)} ${item.srcUnit}</td>
-                        <td><b>${item.measuredVal.toFixed(4)}${item.unitStr}</b></td>
+                        <td>${item.S1.toFixed(1)} ${item.srcUnit}</td>
+                        <td>${item.S2.toFixed(1)} ${item.srcUnit}</td>
+                        <td><b>${item.measuredVal.toFixed(3)}${item.unitStr}</b></td>
                     </tr>
                 `;
             });
@@ -579,7 +571,10 @@ PROCEDURE:
         .question-item textarea { width: 100%; height: 50px; padding: 6px; box-sizing: border-box; font-family: Arial, sans-serif; font-size: 12px; border: 1px solid #aaa; border-radius: 4px; }
         .grading-box { margin-top: 30px; border: 2px solid #333; padding: 12px; width: 300px; float: right; text-align: right; font-weight: bold; font-size: 14px; background: #f9f9f9; }
         .footer { margin-top: 120px; clear: both; display: flex; justify-content: flex-end; font-weight: bold; font-size: 13px; }
-        @media print { textarea { border: none; background: #fff; resize: none; } button { display: none; } }
+        @media print {
+            textarea { border: none; background: #fff; resize: none; }
+            button { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -660,30 +655,9 @@ PROCEDURE:
         reportWindow.focus();
     }
 
-    // animation loop for smooth meter and particles
-    function animationLoop(){
-        // update displayedVal smoothly
-        const latest = history.length? history[history.length-1]:0;
-        if (smoothMeterEnabled) {
-            displayedVal += (latest - displayedVal) * 0.08; // lerp
-            // update readout
-            const measureType = document.getElementById("measureTypeSelect").value;
-            const unitStr = (measureType === 'current') ? ' A' : ' V';
-            document.getElementById("digitalReadout").innerText = displayedVal.toFixed(4) + unitStr;
-        }
-        // re-draw schematic to include moving particles and updated chart
-        drawSchematic(document.getElementById('sourceTypeSelect').value,
-                      parseFloat(document.getElementById('v1Slider').value),
-                      parseFloat(document.getElementById('v2Slider').value),
-                      parseFloat(document.getElementById('r1Slider').value),
-                      parseFloat(document.getElementById('r2Slider').value),
-                      parseFloat(document.getElementById('r3Slider').value));
-
-        requestAnimationFrame(animationLoop);
-    }
-    requestAnimationFrame(animationLoop);
-
-    window.onload = function() { updateBench(); };
+    window.onload = function() {
+        updateBench();
+    };
 </script>
 </body>
 </html>
